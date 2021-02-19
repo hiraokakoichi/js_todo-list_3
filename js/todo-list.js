@@ -1,4 +1,5 @@
 let todoList = [];
+const statusList = ['作業中','完了'];
 
 const add_btn = document.getElementById('add_btn');
 
@@ -11,7 +12,7 @@ function addTodo(){
     if( taskText.length > 0 ){
         const todo = {
             task : taskText,
-            status : '作業中' // 初期値
+            status : statusList[0] // 初期値
         };
         todoList.push(todo);
         
@@ -53,8 +54,26 @@ function makeStatusBtn(){
         let new_cell = task_table.rows[i].insertCell();
         // ボタン要素生成
         let status_btn = document.createElement('button');
-        status_btn.textContent = todoList[i]['status'];
+        status_btn.textContent = todoList[i].status;
         new_cell.appendChild(status_btn);
+
+        status_btn.addEventListener('click', function() {
+            // 状態切り替え
+            if(statusList.indexOf(todoList[i].status)===0){
+                todoList[i].status = statusList[1];
+            }
+            else{
+                todoList[i].status = statusList[0];
+            }
+            // tableを初期化
+            clearTable();
+            // todoを表示
+            showTodoList();
+            // 状態ボタンを表示
+            makeStatusBtn();
+            // 削除ボタンを表示
+            makeDeleteBtn();
+        });
     }
     
 }
